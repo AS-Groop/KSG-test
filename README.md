@@ -4,6 +4,9 @@ This is a test assignment. This project used Vue, Typescript, Pina, Tailwind and
 
 Это тестовое задание. В этом проекте использовались Vue, Typescript, Pina, Tailwind и Firebase.
 
+## Website
+https://main--chic-cajeta-3f9ec0.netlify.app/
+
 ## Project Setup
 
 ```sh
