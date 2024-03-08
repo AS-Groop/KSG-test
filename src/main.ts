@@ -9,6 +9,7 @@ import App from './App.vue'
 import router from './router'
 import {getAuth} from "firebase/auth";
 
+
 let app:dApp<Element> | null = null
 
 const FetchAuth = getAuth()

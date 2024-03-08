@@ -1,4 +1,5 @@
-export {default as Info} from "./Info.vue"
-export {default as TodoControl} from "./TodoControl.vue"
 export {default as ItemList} from "./ItemList.vue"
-export {default as TodoCard} from "./TodoCard.vue"
+export {default as DashCard} from "./Card.vue"
+export {default as InfoCard} from "./InfoCard.vue"
+export {default as Atom} from "./Atom.vue"
+export {default as Counter} from "./Counter.vue"

@@ -1,39 +1,35 @@
 import {defineStore} from "pinia";
-import type {Todo} from "@/types";
+import type {Card} from "@/types";
 import {getDatabase, ref as dbRef, push, remove, set, onValue, update} from "firebase/database";
-import {useAuthStore, useDialogStore, useLoaderStore} from "@/stores";
+import { useDialogStore, useLoaderStore} from "@/stores";
 
 
 interface State {
-    todoList: Todo[]
+    dashboardList: Card[]
     keys: string[]
 }
-export const useTodoStore = defineStore('todoStore',{
+export const useDashboardStore = defineStore('todoStore',{
     state:():State=>{
         return {
-            todoList:[],
+            dashboardList:[],
             keys:[]
         }
     },
     getters: {
-        getAllTodos: s=>s.todoList,
-        getNotDoneTodos: s=>s.todoList.filter(i=>!i.done),
-        getDoneTodos: s=>s.todoList.filter(i=>i.done),
+        getAllCards: s=>s.dashboardList
     },
     actions: {
-        async fetchTodos() {
+        async fetchCards() {
             const loaderStore = useLoaderStore()
             try {
                 loaderStore.changeLoader(true)
-                const authStore = useAuthStore()
-                const uid = authStore.getUid()
                 const db = getDatabase()
-                onValue(dbRef(db, 'users/' + uid + '/todos'), (snapshot)=>{
+                onValue(dbRef(db, 'dashboard/'), (snapshot)=>{
                     const data = snapshot.val()
                     if(data) {
                         this.keys = Object.keys(data)
-                        this.todoList = this.keys.map(key => {
-                            return {...data[key], id: key}
+                        this.dashboardList = this.keys.map(key => {
+                            return {...data[key], id: key} // class: text-green-500 || text-orange-400 || text-pink-700
                         })
                     }
                 })
@@ -44,42 +40,33 @@ export const useTodoStore = defineStore('todoStore',{
                 console.log(e)
             }
         },
-        async addTodo(text:string){
-            const loaderStore = useLoaderStore()
+        async addCard(data:Card){
             try {
-                const authStore = useAuthStore()
                 const createdAt = `${new Date()}`
-                const done = false
-                const todo: Todo = { text, createdAt, done }
-                const uid = authStore.getUid()
+                const todo: Card = { ...data, createdAt }
                 const db = getDatabase();
-                await push(dbRef(db, 'users/'+uid+'/todos'),todo).then(data=>{
-                    this.fetchTodos()
+                await push(dbRef(db, 'dashboard/'),todo).then(data=>{
+                    this.fetchCards()
                 });
             } catch (e) {
                 console.log(e)
             }
         },
-        async createTodoGroup(name:string){},
-        async updateTodo(todo:Todo) {
+        async updateCard(todo:Card) {
             try {
-                const authStore = useAuthStore()
-                const uid = authStore.getUid()
                 const db = getDatabase()
-                await update(dbRef(db, 'users/'+uid+'/todos/'+todo.id),todo)
+                await update(dbRef(db, 'dashboard/'+todo.id),todo)
             } catch (e) {
                 console.log(e)
             }
         },
-        async deleteTodo(id:string) {
+        async deleteCard(id:string) {
             try {
                 const dialogStore = useDialogStore()
-                const isDialog = await dialogStore.confirm({title: 'Delete Todo', text: 'Do you want to delete this todo? 🧐'})
+                const isDialog = await dialogStore.confirm({title: 'Delete Card', text: 'Do you want to delete this card? 🧐'})
                 if(isDialog){
-                    const authStore = useAuthStore()
-                    const uid = authStore.getUid()
                     const db = getDatabase()
-                    await remove(dbRef(db, 'users/'+uid+'/todos/'+id))
+                    await remove(dbRef(db, 'dashboard/'+id))
                 }
             } catch (e) {
                 console.log(e)

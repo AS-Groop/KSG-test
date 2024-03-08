@@ -1,13 +1,16 @@
-export interface Todo {
+export interface Card {
+    title:string;
     text: string;
+    value?: string;
+    img?: string;
+    type?: string;
+    class?: string;
+    logo?: string;
     done?: boolean;
     createdAt?: string | Date;
     id?: string;
 }
 
-// export interface TodoGroup<T extends string> {
-    // [T]: Todo[],
-// }
 
 export interface IDialog {
     title?: string;

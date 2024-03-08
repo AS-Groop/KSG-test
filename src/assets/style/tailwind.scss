@@ -34,16 +34,29 @@
   @apply w-full px-4 py-4 rounded;
 }
 
-// card
-.todo-card {
+.dark .text_card {
+  background: linear-gradient(#fff,#fff,#000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
+.text_card {
+  background: linear-gradient(#000,#ccc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+// card
 
 .none-card {
   @apply text-center;
 }
 
 p, label {
-  @apply text-black dark:text-gray-50 transition-colors;
+  @apply text-black dark:text-[#6d6d71] transition-colors;
+}
+
+h3 {
+  @apply text-black dark:text-white transition-colors;
 }
 
 span.emphasis {
@@ -51,7 +64,7 @@ span.emphasis {
 }
 
 .bg-container {
-  @apply dark:bg-gray-800 bg-white;
+  @apply dark:bg-[#1a1a1a] bg-white;
 }
 
   * {
